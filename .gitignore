@@ -1,0 +1,41 @@
+# ── Python ──────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+
+# ── Django ──────────────────────────────
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# ── Media uploads (user images) ─────────
+media/
+
+# ── Static files (auto-generated) ───────
+staticfiles/
+
+# ── Virtual environment ──────────────────
+env/
+venv/
+ENV/
+.venv/
+
+# ── Environment variables file ──────────
+.env
+.env.local
+
+# ── VS Code ─────────────────────────────
+.vscode/
+*.code-workspace
+
+# ── Windows ─────────────────────────────
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# ── Mac ─────────────────────────────────
+.DS_Store

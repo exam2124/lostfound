@@ -1,0 +1,193 @@
+<!-- core/templates/core/items.html -->
+{% extends 'core/base.html' %}
+{% block title %}My Items — Lost & Found{% endblock %}
+
+{% block content %}
+<style>
+  /* ── Page Header ── */
+  .page-top {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 12px;
+  }
+  .page-top h1 { font-size: 1.8rem; color: #1a1a2e; font-weight: 800; }
+
+  /* ── Section Labels ── */
+  .section-label {
+    font-size: 1.1rem; font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin: 28px 0 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .label-lost  { background: #fde8e8; color: #c0392b; }
+  .label-found { background: #d5f5e3; color: #1e8449; }
+
+  /* ── Cards Grid ── */
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  /* ── Individual Item Card ── */
+  .item-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .item-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+  }
+
+  /* Image area */
+  .item-card .card-img img {
+    width: 100%; height: 170px; object-fit: cover;
+    display: block;
+  }
+  .item-card .card-img .no-img {
+    width: 100%; height: 170px;
+    background: linear-gradient(135deg, #f0f4f8, #dde4ed);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+  }
+
+  /* Card body text */
+  .card-body { padding: 16px; }
+  .badge {
+    display: inline-block;
+    padding: 3px 12px; border-radius: 20px;
+    font-size: 0.72rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .badge-lost  { background: #fde8e8; color: #c0392b; }
+  .badge-found { background: #d5f5e3; color: #1e8449; }
+
+  .card-body h3 {
+    font-size: 1rem; font-weight: 700;
+    color: #1a1a2e; margin-bottom: 8px;
+  }
+  .card-meta {
+    font-size: 0.82rem; color: #666;
+    margin-bottom: 5px; display: flex;
+    align-items: flex-start; gap: 6px;
+  }
+  .card-desc {
+    font-size: 0.82rem; color: #555;
+    margin-top: 8px; line-height: 1.5;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 8px;
+  }
+
+  /* ── Empty State ── */
+  .empty-state {
+    text-align: center; padding: 50px 20px;
+    background: white; border-radius: 14px;
+    color: #aaa;
+  }
+  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+  .empty-state p { font-size: 0.95rem; }
+</style>
+
+<!-- Page Header -->
+<div class="page-top">
+  <h1>📋 My Reported Items</h1>
+  <a href="{% url 'home' %}" class="btn btn-dark">← Back to Home</a>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     LOST ITEMS SECTION
+═════════════════════════════════════════════════════-->
+<div class="section-label label-lost">
+  🚨 Lost Items
+  <span style="background:#c0392b; color:white; padding:2px 10px; border-radius:20px; font-size:0.8rem;">
+    {{ lost_items.count }}
+  </span>
+</div>
+
+{% if lost_items %}
+  <div class="items-grid">
+    {% for item in lost_items %}
+    <div class="item-card">
+
+      <!-- Image or placeholder emoji -->
+      <div class="card-img">
+        {% if item.image %}
+          <img src="{{ item.image.url }}" alt="{{ item.item_name }}" />
+        {% else %}
+          <div class="no-img">📦</div>
+        {% endif %}
+      </div>
+
+      <!-- Card details -->
+      <div class="card-body">
+        <span class="badge badge-lost">Lost</span>
+        <h3>{{ item.item_name }}</h3>
+        <p class="card-meta">📍 {{ item.location }}</p>
+        <p class="card-meta">🕐 {{ item.date_time|date:"d M Y, H:i" }}</p>
+        {% if item.contact_info %}
+          <p class="card-meta">📞 {{ item.contact_info }}</p>
+        {% endif %}
+        <p class="card-desc">{{ item.description|truncatechars:100 }}</p>
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state">
+    <div class="empty-icon">🔍</div>
+    <p>You haven't reported any lost items yet.</p>
+  </div>
+{% endif %}
+
+
+<!-- ════════════════════════════════════════════════════
+     FOUND ITEMS SECTION
+═════════════════════════════════════════════════════-->
+<div class="section-label label-found">
+  ✅ Found Items
+  <span style="background:#1e8449; color:white; padding:2px 10px; border-radius:20px; font-size:0.8rem;">
+    {{ found_items.count }}
+  </span>
+</div>
+
+{% if found_items %}
+  <div class="items-grid">
+    {% for item in found_items %}
+    <div class="item-card">
+
+      <div class="card-img">
+        {% if item.image %}
+          <img src="{{ item.image.url }}" alt="{{ item.item_name }}" />
+        {% else %}
+          <div class="no-img">📦</div>
+        {% endif %}
+      </div>
+
+      <div class="card-body">
+        <span class="badge badge-found">Found</span>
+        <h3>{{ item.item_name }}</h3>
+        <p class="card-meta">📍 {{ item.location }}</p>
+        <p class="card-meta">🕐 {{ item.date_time|date:"d M Y, H:i" }}</p>
+        {% if item.contact_info %}
+          <p class="card-meta">📞 {{ item.contact_info }}</p>
+        {% endif %}
+        <p class="card-desc">{{ item.description|truncatechars:100 }}</p>
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state">
+    <div class="empty-icon">✅</div>
+    <p>You haven't reported any found items yet.</p>
+  </div>
+{% endif %}
+
+{% endblock %}
