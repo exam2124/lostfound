@@ -6,20 +6,27 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Reads SECRET_KEY from Railway environment variables
 SECRET_KEY = os.environ.get(
     'SECRET_KEY',
     'django-insecure-local-dev-key-only'
 )
 
-# False on Railway (production), True locally
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
+# ─── Allowed Hosts ────────────────────────────────────────────────
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '.railway.app',        # covers all *.railway.app domains
-    '.up.railway.app',     # Railway's newer domain format
+    '.railway.app',
+    '.up.railway.app',
+    'web-production-65655.up.railway.app',  # your Railway domain
+]
+
+# ─── CSRF Trusted Origins (THIS FIXES THE 403 ERROR) ─────────────
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-production-65655.up.railway.app',
+    'https://*.railway.app',
+    'https://*.up.railway.app',
 ]
 
 INSTALLED_APPS = [
@@ -34,7 +41,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # serves static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -64,8 +71,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'lostfound.wsgi.application'
 
 # ─── Database ─────────────────────────────────────────────────────
-# Railway provides DATABASE_URL automatically when you add PostgreSQL
-# Locally it falls back to SQLite
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if DATABASE_URL:
