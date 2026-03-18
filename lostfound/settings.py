@@ -2,20 +2,24 @@
 
 from pathlib import Path
 import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Reads SECRET_KEY from Railway environment variables
 SECRET_KEY = os.environ.get(
     'SECRET_KEY',
-    'django-insecure-lostfound-secret-key-2024'
+    'django-insecure-local-dev-key-only'
 )
 
+# False on Railway (production), True locally
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '.onrender.com',
+    '.railway.app',        # covers all *.railway.app domains
+    '.up.railway.app',     # Railway's newer domain format
 ]
 
 INSTALLED_APPS = [
@@ -30,7 +34,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # serves static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,13 +63,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lostfound.wsgi.application'
 
-# ─── Database — SQLite (works on Render, no extra config needed) ──
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# ─── Database ─────────────────────────────────────────────────────
+# Railway provides DATABASE_URL automatically when you add PostgreSQL
+# Locally it falls back to SQLite
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -93,17 +109,3 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/home/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-```
-
-Save (`Ctrl + S`).
-
----
-
-## STEP 4 — Update `requirements.txt` (Remove psycopg2)
-
-Since we're using SQLite now, we don't need `psycopg2` at all. Update `requirements.txt`:
-```
-Django==4.2.7
-Pillow==10.4.0
-gunicorn==21.2.0
-whitenoise==6.6.0
