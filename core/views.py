@@ -106,17 +106,17 @@ def home_view(request):
 
 
 # ══════════════════════════════════════════════════════════════════
-#  ITEMS VIEW — Shows all items reported by the logged-in user
+#  ITEMS VIEW — Shows all items reported by all users
 # ══════════════════════════════════════════════════════════════════
 @login_required
 def items_view(request):
-    # Filter by current user AND by type, newest first
+    # Filter by type, newest first
     lost_items  = Item.objects.filter(
-        user=request.user, item_type='lost'
+        item_type='lost'
     ).order_by('-reported_at')
 
     found_items = Item.objects.filter(
-        user=request.user, item_type='found'
+        item_type='found'
     ).order_by('-reported_at')
 
     return render(request, 'core/items.html', {

@@ -1,6 +1,6 @@
 <!-- core/templates/core/items.html -->
 {% extends 'core/base.html' %}
-{% block title %}My Items — Lost & Found{% endblock %}
+{% block title %}All Items — Lost & Found{% endblock %}
 
 {% block content %}
 <style>
@@ -94,7 +94,7 @@
 
 <!-- Page Header -->
 <div class="page-top">
-  <h1>📋 My Reported Items</h1>
+  <h1>📋 All Reported Items</h1>
   <a href="{% url 'home' %}" class="btn btn-dark">← Back to Home</a>
 </div>
 
@@ -141,7 +141,7 @@
 {% else %}
   <div class="empty-state">
     <div class="empty-icon">🔍</div>
-    <p>You haven't reported any lost items yet.</p>
+    <p>No lost items have been reported yet.</p>
   </div>
 {% endif %}
 
@@ -186,7 +186,7 @@
 {% else %}
   <div class="empty-state">
     <div class="empty-icon">✅</div>
-    <p>You haven't reported any found items yet.</p>
+    <p>No found items have been reported yet.</p>
   </div>
 {% endif %}
 
