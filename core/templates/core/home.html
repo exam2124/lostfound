@@ -7,54 +7,56 @@
   /* ── Page Header ── */
   .page-header {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 3rem;
   }
-  .page-header h1 { font-size: 2.1rem; color: #1a1a2e; font-weight: 800; }
-  .page-header p  { color: #666; margin-top: 8px; font-size: 1rem; }
+  .page-header h1 { font-size: 2.5rem; color: var(--gray-900); font-weight: 800; letter-spacing: -0.025em; }
+  .page-header p  { color: var(--gray-500); margin-top: 0.75rem; font-size: 1.125rem; }
 
   /* ── Action Buttons Row ── */
   .action-row {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 1rem;
     flex-wrap: wrap;
-    margin-bottom: 40px;
+    margin-bottom: 4rem;
   }
-  .action-row .btn { font-size: 1rem; padding: 13px 28px; }
+  .action-row .btn { font-size: 1rem; padding: 0.75rem 1.75rem; border-radius: 9999px; }
 
   /* ── Section Heading ── */
   .section-title {
-    font-size: 1.05rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 18px;
-    padding-left: 12px;
-    border-left: 4px solid #2980b9;
+    color: var(--gray-900);
+    margin-bottom: 1.5rem;
+    padding-left: 0.75rem;
+    border-left: 4px solid var(--primary);
+    display: flex;
+    align-items: center;
   }
 
   /* ── Sample Items Grid ── */
   .sample-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.5rem;
   }
   .sample-card {
     background: white;
-    border-radius: 14px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    box-shadow: var(--shadow-sm), 0 0 0 1px rgba(0,0,0,0.02);
     text-align: center;
-    padding: 20px 10px 14px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    padding: 2rem 1rem;
+    transition: var(--transition);
     cursor: default;
   }
   .sample-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md), 0 0 0 1px rgba(0,0,0,0.05);
   }
-  .sample-card .icon { font-size: 2.8rem; margin-bottom: 10px; display: block; }
-  .sample-card .name { font-size: 0.85rem; font-weight: 700; color: #333; }
-  .sample-card .hint { font-size: 0.75rem; color: #999; margin-top: 4px; }
+  .sample-card .icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .sample-card .name { font-size: 0.9375rem; font-weight: 600; color: var(--gray-900); }
+  .sample-card .hint { font-size: 0.75rem; color: var(--gray-500); margin-top: 0.25rem; }
 </style>
 
 <!-- ── Page Header ── -->
